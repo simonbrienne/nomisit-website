@@ -15,7 +15,7 @@ To get this webpage running locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/nomis-it-website.git
+   git clone git@github.com/simonbrienne/nomis-it-website.git
    ```
 2. Open the index.html file in a web browser.
 
