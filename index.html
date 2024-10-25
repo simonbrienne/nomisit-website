@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon - Terminal</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Behind the terminal content */
+            filter: blur(3px); /* Adds blur to the Matrix background */
+        }
+        .terminal {
+            background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent to see the matrix effect */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            color: #00ff00;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .prompt, .output {
+            margin: 10px 0;
+        }
+        a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+        a:focus {
+            outline: none;
+            color: #fff;
+            background-color: #00ff00;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .ascii-art {
+            white-space: pre;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            line-height: 18px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Effect Canvas -->
+    <canvas id="matrix"></canvas>
+
+    <div class="terminal">
+        <div class="last-login" id="lastLogin">
+            <!-- JavaScript will insert the date and time here -->
+        </div>
+        
+        <!-- Nomis IT ASCII Art Message -->
+        <div class="ascii-art">
+ __    _  _______  __   __  ___   _______    ___   _______ 
+|  |  | ||       ||  |_|  ||   | |       |  |   | |       |
+|   |_| ||   _   ||       ||   | |  _____|  |   | |_     _|
+|       ||  | |  ||       ||   | | |_____   |   |   |   |  
+|  _    ||  |_|  ||       ||   | |_____  |  |   |   |   |  
+| | |   ||       || ||_|| ||   |  _____| |  |   |   |   |  
+|_|  |__||_______||_|   |_||___| |_______|  |___|   |___|  
+        </div>
+
+        <div class="prompt">
+            <span>> <a href="https://www.linkedin.com/in/simon-brienne-🥷-081901154/" target="_blank" tabindex="2">LinkedIn</a></span>
+        </div>
+        <div class="prompt">
+            <span>> <a href="https://www.instagram.com/nomis.it/" target="_blank" tabindex="1">Instagram</a></span>
+        </div>
+        <div class="prompt">
+            <span>> <a href="https://www.youtube.com/@NomisIT" target="_blank" tabindex="3">YouTube</a></span>
+        </div>
+        <div class="prompt">
+            <span>> <a href="mailto:contact@nomis-it.com" tabindex="4">Contact</a></span>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        // Function to set canvas size dynamically
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas); // Adjust canvas on window resize
+        resizeCanvas(); // Set initial size
+
+        const matrixChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%+-/~{[|`]}";
+        const fontSize = 16;
+        let columns = canvas.width / fontSize;
+        let drops = Array.from({ length: columns }, () => canvas.height);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#0F0"; // Green matrix color
+            ctx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 33); // Refresh the canvas every 33 milliseconds
+
+        // Recalculate drops on resize
+        function recalculateDrops() {
+            columns = canvas.width / fontSize;
+            drops = Array.from({ length: columns }, () => canvas.height);
+        }
+
+        window.addEventListener('resize', recalculateDrops); // Recalculate drops on resize
+
+        function getLastLogin() {
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            const now = new Date();
+            const dayName = days[now.getDay()];
+            const monthName = months[now.getMonth()];
+            const day = String(now.getDate()).padStart(2, '0');
+            const year = now.getFullYear();
+            const hour = String(now.getHours()).padStart(2, '0');
+            const minute = String(now.getMinutes()).padStart(2, '0');
+            const second = String(now.getSeconds()).padStart(2, '0');
+
+            return `Last login: ${dayName} ${monthName} ${day} ${hour}:${minute}:${second}`;
+        }
+
+        document.getElementById('lastLogin').textContent = getLastLogin();
+
+        let currentFocusIndex = 0; // Index to track the current focused element
+        const elements = document.querySelectorAll('a'); // Include only the links
+        elements[currentFocusIndex].focus();  // Focus on the first link initially
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowDown') {
+                currentFocusIndex = (currentFocusIndex + 1) % elements.length;
+                elements[currentFocusIndex].focus();
+                event.preventDefault(); // Prevent page scrolling
+            } else if (event.key === 'ArrowUp') {
+                currentFocusIndex = (currentFocusIndex - 1 + elements.length) % elements.length;
+                elements[currentFocusIndex].focus();
+                event.preventDefault(); // Prevent page scrolling
+            } else if (event.key === 'Enter') {
+                document.activeElement.click(); // Simulate click on the focused link
+            }
+        });
+    </script>
+</body>
+</html>
