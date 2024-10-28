@@ -7,7 +7,6 @@ terraform {
     }
   }
   backend "gcs" {
-    credentials = file(var.credentials_file)
     bucket      = "nomisit-terraform-state"
     prefix      = "terraform/state"
   }
@@ -16,7 +15,6 @@ terraform {
 provider "google" {
   project     = var.project
   region      = var.region
-  credentials = file(var.credentials_file)
 }
 
 # Create bucket on EU region for hosting website

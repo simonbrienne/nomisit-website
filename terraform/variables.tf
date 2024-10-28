@@ -31,7 +31,7 @@ variable "not_found_page" {
 variable "credentials_file" {
   description = "The path to the Google Cloud credentials JSON file"
   type        = string
-  default     = "config/nomisit-website-43823182c6de.json"
+  default     = "nomisit-website-43823182c6de.json"
 }
 
 variable "ssl_domains" {
