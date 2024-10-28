@@ -1,0 +1,37 @@
+steps:
+  # Step 1: Terraform initialization
+  - name: "hashicorp/terraform:1.3.6"  # Mettez ici la version que vous souhaitez
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform init \
+          -backend-config="bucket=${_GCS_BUCKET}" \
+          -backend-config="prefix=${_TF_STATE_PREFIX}"
+
+  # Step 2: Terraform plan
+  - name: "hashicorp/terraform:1.3.6"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform plan \
+          -var="project_id=${_PROJECT_ID}" \
+          -var="region=${_REGION}"
+
+  # Step 3: Terraform apply
+  - name: "hashicorp/terraform:1.3.6"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform apply -auto-approve \
+          -var="project_id=${_PROJECT_ID}" \
+          -var="region=${_REGION}"
+
+# Substitutions pour éviter de stocker des informations sensibles en dur
+substitutions:
+  _PROJECT_ID: "nomisit-website"
+  _REGION: "europe-west1"
+  _GCS_BUCKET: "nomisit-terraform-state"
+  _TF_STATE_PREFIX: "terraform/state"
