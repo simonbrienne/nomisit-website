@@ -6,6 +6,11 @@ terraform {
       version = "4.51.0"
     }
   }
+  backend "gcs" {
+    credentials = file(var.credentials_file)
+    bucket      = "nomisit-terraform-state"
+    prefix      = "terraform/state"
+  }
 }
 
 provider "google" {
