@@ -1,8 +1,4 @@
 steps:
-  # Authentification Google Cloud
-  - name: "gcr.io/cloud-builders/gcloud"
-    entrypoint: "gcloud"
-    args: ["auth", "application-default", "login"]
 
   # Step 1: Terraform initialization
   - name: "hashicorp/terraform:1.3.6"
