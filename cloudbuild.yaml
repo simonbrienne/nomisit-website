@@ -18,7 +18,7 @@ steps:
       - "-c"
       - |
         terraform plan \
-          -var="project_id=${_PROJECT_ID}" \
+          -var="project=${_PROJECT_ID}" \
           -var="region=${_REGION}"
     dir: "terraform"  # Répertoire contenant les fichiers .tf
 
@@ -29,7 +29,7 @@ steps:
       - "-c"
       - |
         terraform apply -auto-approve \
-          -var="project_id=${_PROJECT_ID}" \
+          -var="project=${_PROJECT_ID}" \
           -var="region=${_REGION}"
     dir: "terraform"  # Répertoire contenant les fichiers .tf
 
