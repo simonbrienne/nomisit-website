@@ -1,0 +1,43 @@
+steps:
+
+  # Step 1: Terraform initialization
+  - name: "hashicorp/terraform:1.3.6"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform init \
+          -backend-config="bucket=${_GCS_BUCKET}" \
+          -backend-config="prefix=${_TF_STATE_PREFIX}"
+    dir: "terraform"  # Répertoire contenant les fichiers .tf
+
+  # Step 2: Terraform plan
+  - name: "hashicorp/terraform:1.3.6"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform plan \
+          -var="project=${_PROJECT_ID}" \
+          -var="region=${_REGION}"
+    dir: "terraform"  # Répertoire contenant les fichiers .tf
+
+  # Step 3: Terraform apply
+  - name: "hashicorp/terraform:1.3.6"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform apply -auto-approve \
+          -var="project=${_PROJECT_ID}" \
+          -var="region=${_REGION}"
+    dir: "terraform"  # Répertoire contenant les fichiers .tf
+
+substitutions:
+  _PROJECT_ID: "nomisit-website"
+  _REGION: "europe-west1"
+  _GCS_BUCKET: "nomisit-terraform-state"
+  _TF_STATE_PREFIX: "terraform/state"
+
+options:
+  logging: CLOUD_LOGGING_ONLY

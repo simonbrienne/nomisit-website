@@ -1,4 +1,4 @@
-# Simon - Terminal Webpage
+# Nomis IT - Terminal Webpage
 
 This project provides an interactive "terminal" interface as a homepage for Simon's portfolio website, [Nomis IT](https://nomis-it.com). The page features a retro-styled terminal environment with a Matrix-style background animation, offering links to Simon's social media profiles and contact information. It serves as a unique, visually engaging access point to connect with Simon's professional brand.
 
@@ -35,6 +35,36 @@ To get this webpage running locally:
 - ASCII Art: Customize the ASCII art logo under .ascii-art in the HTML.
 - Matrix Characters: Adjust matrixChars in the JavaScript for a personalized Matrix background.
 - Styling: Modify CSS as needed, especially under .terminal and canvas classes for unique color and visual effects.
+
+## 👀 How to run
+
+### Docker
+
+```bash
+docker build -t nomis-it-website .
+docker run -p 5555:80 nomis-it-website
+```
+
+Access the website at http://localhost:5555
+
+### Local
+
+Just open the `index.html` file in your browser.
+
+## 🏁 How to deploy
+
+### Terraform
+
+```bash
+cd terraform
+terraform init
+terraform plan
+terraform apply
+```
+
+### Cloudbuild
+
+Commit directly to the `main` branch and the pipeline will deploy the website to GCP.
 
 ## 🚀 Live Version
 

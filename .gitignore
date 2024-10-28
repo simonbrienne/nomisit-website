@@ -1,0 +1,32 @@
+# Logs
+logs
+*.log
+
+# Terraform files
+terraform/.terraform/
+terraform/terraform.tfstate*
+*.tfstate
+*.tfstate.backup
+
+# Configuration files
+nomisit-website-43823182c6de.json
+
+# Node/npm modules (if applicable)
+node_modules/
+
+# Compiled code (for various languages)
+*.class
+*.pyc
+*.o
+*.out
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# Exclude binary and sensitive files
+*.bin
