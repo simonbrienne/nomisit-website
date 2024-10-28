@@ -42,3 +42,6 @@ substitutions:
   _REGION: "europe-west1"
   _GCS_BUCKET: "nomisit-terraform-state"
   _TF_STATE_PREFIX: "terraform/state"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
